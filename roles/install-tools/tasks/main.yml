@@ -1,0 +1,10 @@
+---
+- name: Include pimp-my-kali tasks
+  ansible.builtin.include_tasks: pimp-my-kali.yml
+  when: pimpmykali_enabled
+- name: Include apt packages tasks
+  ansible.builtin.include_tasks: apt-packages.yml
+  when: install_tools
+- name: Include setup docker tasks
+  ansible.builtin.include_tasks: setup-docker.yml
+  when: install_tools

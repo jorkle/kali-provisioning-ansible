@@ -1,0 +1,122 @@
+---
+- name: Start docker service
+  become: true
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+  when: setup_docker
+
+- name: Download explainshell dump file
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/idank/explainshell/releases/download/db-dump/dump.gz
+    dest: /tmp/dump.gz
+    mode: '0644'
+  when: setup_docker_explainshell
+
+- name: Clones the explainshell repository
+  become: true
+  ansible.builtin.git:
+    repo: "{{ repo_explainshell }}"
+    dest: "/opt/explainshell"
+    clone: true
+    update: false
+    force: false
+  ignore_errors: true
+  when: setup_docker_explainshell
+
+- name: Run docker-compose build for explainshell
+  become: true
+  ansible.builtin.command:
+    cmd: "docker-compose build"
+    chdir: "/opt/explainshell"
+  when: setup_docker_explainshell
+
+- name: Create docker compose systemd service for starting explainshell
+  become: true
+  ansible.builtin.template:
+    src: "explainshell-docker-compose.service.j2"
+    dest: "/etc/systemd/system/explainshell.service"
+    mode: "0644"
+  when: setup_docker_explainshell
+
+- name: Run daemon-reload to pick up new systemd service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: setup_docker_explainshell
+
+- name: Start the explainshell service
+  become: true
+  ansible.builtin.service:
+    name: explainshell
+    state: started
+    enabled: true
+  when: setup_docker_explainshell
+
+- name: Create a directory for BloodHound
+  become: true
+  ansible.builtin.command:
+    cmd: "mkdir /opt/bloodhound"
+    creates: "/opt/bloodhound"
+  register: provision_bloodhound
+  when: setup_docker_bloodhound
+
+- name: Download the BloodHound Community Edition docker compose file
+  become: true
+  ansible.builtin.get_url:
+    url: "https://ghst.ly/getbhce"
+    dest: "/opt/bloodhound/docker-compose.yml"
+    mode: '0644'
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+- name: Pull the BloodHound Community Edition docker image
+  become: true
+  ansible.builtin.command:
+    cmd: "docker-compose pull"
+    chdir: "/opt/bloodhound"
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+
+- name: Bring up the BloodHound Community Edition docker container
+  become: true
+  ansible.builtin.command:
+    cmd: "docker-compose up -d"
+    chdir: "/opt/bloodhound"
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+- name: Gather bloodhound password from docker logs
+  become: true
+  ansible.builtin.raw: "docker logs bloodhound_bloodhound_1 | grep --color=no -Eoi 'Initial\ Password.*$' | sed 's/\ \ */\ /g' | cut -d ' ' -f 5 | tee /opt/bloodhound/current.password"
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+- name: stop BloodHound docker instances in preparation for systemd service replacement
+  become: true
+  ansible.builtin.command:
+    cmd: "docker-compose down"
+    chdir: "/opt/bloodhound"
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+- name: Create docker compose systemd service for starting bloodhound
+  become: true
+  ansible.builtin.template:
+    src: "bloodhound-docker-compose.service.j2"
+    dest: "/etc/systemd/system/bloodhound.service"
+    mode: "0644"
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+
+- name: Run daemon-reload to pick up new systemd service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: setup_docker_bloodhound and provision_bloodhound.changed
+
+- name: Start the bloodhound service
+  become: true
+  ansible.builtin.service:
+    name: bloodhound
+    state: started
+    enabled: true
+  when: setup_docker_bloodhound and provision_bloodhound.changed

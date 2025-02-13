@@ -1,0 +1,6 @@
+---
+- name: Restart lightdm
+  become: true
+  ansible.builtin.service:
+    name: lightdm
+    state: restarted

@@ -1,0 +1,19 @@
+---
+dconf_values:
+  - { name: 'background-color', value: "'#2E2E34344040'" }
+  - { name: 'background-darkness', value: "0.94999999999999996" }
+  - { name: 'background-type', value: "'transparent'" }
+  - { name: 'bold-color', value: "'#D8D8DEDEE9E9'" }
+  - { name: 'bold-color-same-as-fg', value: "false" }
+  - { name: 'custom-command', value: "'/bin/zsh -c \"tmux new-session -A -s main\"'" }
+  - { name: 'default-show-menubar', value: "false" }
+  - { name: 'font', value: "'Operator Mono Lig Light 12'" }
+  - { name: 'foreground-color', value: "'#E5E5E9E9F0F0'" }
+  - { name: 'palette', value: "'#43434C4B5E5E:#D4D419191919:#8F8FBCBCBBBB:#FEFEA4A44C4C:#5E5E8181ACAC:#8F8FBCBCBBBB:#8888C0C0D0D0:#ECECEFEFF4F4:#191983838888:#ECEC01010101:#4747D4D4B9B9:#FFFF8A8A1818:#5E5E8181ACAC:#8F8FBCBCBBBB:#5E5E8181ACAC:#ECECEFEFF4F4'" }
+  - { name: 'scrollback-unlimited', value: "true" }
+  - { name: 'scrollbar-position', value: "'hidden'" }
+  - { name: 'silent-bell', value: "true" }
+  - { name: 'use-custom-command', value: "true" }
+  - { name: 'use-system-font', value: "false" }
+  - { name: 'use-theme-colors', value: "false" }
+  - { name: 'visible-name', value: "'Default'" }

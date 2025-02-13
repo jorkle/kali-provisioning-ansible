@@ -1,0 +1,7 @@
+---
+- name: Include install-obsidian tasks
+  ansible.builtin.include_tasks: install-obsidian.yml
+  when: install_obsidian
+- name: Include fetch-obsidian-vault tasks
+  ansible.builtin.include_tasks: fetch-obsidian-vault.yml
+  when: prepare_notes

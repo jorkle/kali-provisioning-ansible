@@ -1,0 +1,12 @@
+---
+### PimpMyKali Repository
+repo_pimpmykali: "https://github.com/Dewalt-arch/pimpmykali"
+
+### Dotfiles Repository (dotbot required)
+repo_dotfiles: "https://github.com/jorkle/dotfiles"
+
+### Notes Repository (Obsidian Required)
+repo_notes: "https://github.com/jorkle/notes"
+
+### Explainshell Repository
+repo_explainshell: "https://github.com/idank/explainshell.git"

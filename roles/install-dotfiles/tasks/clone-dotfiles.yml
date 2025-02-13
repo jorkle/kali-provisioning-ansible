@@ -1,0 +1,13 @@
+---
+- name: Clone the dotfiles repository
+  become: true
+  become_user: "{{ user_name }}"
+  ansible.builtin.git:
+    repo: '{{ repo_dotfiles }}'
+    dest: '{{ user_home }}/.dotfiles'
+    clone: true
+    update: true
+    force: true
+    version: kali
+  ignore_errors: true
+  when: install_dotfiles

@@ -1,0 +1,56 @@
+---
+
+- name: Generate password hash for user module
+  ansible.builtin.command:
+    cmd: python -c "from passlib.hash import sha512_crypt; print(sha512_crypt.using(rounds=5000).hash(b'{{ user_password }}'))"
+    creates: "{{ user_home }}/"
+  register: user_password_hash
+
+- name: Create user
+  become: true
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    password: "{{ user_password_hash.stdout }}"
+    shell: /bin/zsh
+    create_home: true
+    home: "{{ user_home }}"
+    groups: sudo, docker
+    append: true
+    update_password: on_create
+    generate_ssh_key: true
+
+- name: Copy home directory to new user
+  become: true
+  ansible.builtin.copy:
+    src: "/home/jorkle/"
+    dest: "{{ user_home }}/"
+    remote_src: true
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: preserve
+    directory_mode: preserve
+
+- name: Fix permissions in the new users home directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ user_home }}/"
+    state: directory
+    recurse: true
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+
+
+- name: Find all files in home directory that contain the vagrant users home directory path.
+  become: true
+  become_user: "{{ user_name }}"
+  ansible.builtin.raw: 'grep -Hri "\/home\/vagrant" 2>/dev/null | sed "s/\:.*$//g"'
+  register: files_to_change
+
+- name: Replace all instances of the vagrant users home directory path with the new users home directory path.
+  become: true
+  ansible.builtin.replace:
+    dest: "{{ item }}"
+    regexp: "\/home\/vagrant"
+    replace: "{{ user_home }}"
+  with_items: "{{ files_to_change.stdout_lines }}"
+  when: files_to_change.stdout_lines | length > 0

@@ -1,0 +1,14 @@
+---
+- name: Include create-user tasks
+  ansible.builtin.include_tasks: create-user.yml
+  when: user_name != "vagrant"
+- name: Include clone-dotfiles tasks
+  ansible.builtin.include_tasks: clone-dotfiles.yml
+  when: install_dotfiles
+- name: Include install-dotfiles tasks
+  ansible.builtin.include_tasks: install-dotfiles.yml
+  when: install_dotfiles
+- name: Include configure-mate-terminal tasks
+  ansible.builtin.include_tasks: configure-mate-terminal.yml
+- name: Include restart-lightdm tasks
+  ansible.builtin.include_tasks: restart-lightdm.yml

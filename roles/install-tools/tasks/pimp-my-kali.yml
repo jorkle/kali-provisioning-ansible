@@ -1,0 +1,27 @@
+---
+- name: Clone the pimpmykali repository
+  become: true
+  ansible.builtin.git:
+    repo: "https://github.com/Dewalt-arch/pimpmykali"
+    dest: "{{ pimpmykali_dir }}"
+    clone: true
+    update: false
+    force: false
+  ignore_errors: true
+
+- name: Patch pimpmykali for automation compatibility
+  become: true
+  ansible.builtin.command:
+    cmd: 'sed -i ''{{ pimpmykali_mirrors_patch }}'' {{ pimpmykali_dir }}/pimpmykali.sh'
+  when: pimpmykali_mirrors_optimize
+
+- name: Optimize Kali APT mirrors using pimpmykali
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ pimpmykali_dir }}/pimpmykali.sh --mirrors 1>/dev/null 2>/dev/null"
+  when: pimpmykali_mirrors_optimize
+
+- name: Run New VM setup using pimpmykali
+  become: true
+  ansible.builtin.shell:
+    cmd: "{{ pimpmykali_dir }}/pimpmykali.sh --newvm"

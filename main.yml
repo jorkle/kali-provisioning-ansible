@@ -1,0 +1,20 @@
+---
+- name: "Customizing Kali"
+  hosts: all
+  pre_tasks:
+    - name: "Include group_vars"
+      ansible.builtin.include_vars:
+        dir: "group_vars/"
+        extensions: ["yml"]
+  connection: local
+  roles:
+    - role: "install-tools"
+      when: install_tools
+    - role: "install-dotfiles"
+      when: install_dotfiles
+    - role: "prepare-notes"
+      when: prepare_notes
+    - role: "customize-browser"
+      when: customize_browser
+    - role: "switch-to-i3"
+      when: switch_to_i3

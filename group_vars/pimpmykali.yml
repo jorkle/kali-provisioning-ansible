@@ -1,0 +1,3 @@
+---
+pimpmykali_dir: "/opt/pimpmykali"
+pimpmykali_mirrors_patch: '/Save\ new\ changes\ to\ \/etc\/apt\/sources.*$/{n;s/^.*$/\ \ \ \ userinput\=\"Y\"/;}'

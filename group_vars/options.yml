@@ -1,0 +1,17 @@
+---
+## Enable/Disable the installation of apt packages
+install_apt_packages: true          # Enable the installation of the apt packages specified below
+
+install_obsidian: true              # Enable the installation of Obsidian
+pimpmykali_enabled: false             # Enable the pimpmykali related tasks (clone, patch, optimize mirrors, run new vm setup)
+pimpmykali_mirrors_optimize: false    # Enable the optimization of apt mirrors using pimpmykali
+
+install_tools: true
+install_dotfiles: true
+switch_to_i3: true
+customize_browser: false
+prepare_notes: true
+
+setup_docker: true
+setup_docker_explainshell: true
+setup_docker_bloodhound: true

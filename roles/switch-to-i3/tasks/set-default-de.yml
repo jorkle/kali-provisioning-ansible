@@ -1,0 +1,9 @@
+---
+- name: Set the default desktop environment to i3
+  become: true
+  community.general.alternatives:
+    name: "x-session-manager"
+    path: "/usr/bin/i3"
+    link: "/usr/bin/x-session-manager"
+    priority: 60
+    state: auto

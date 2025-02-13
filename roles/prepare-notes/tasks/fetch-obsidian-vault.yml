@@ -1,0 +1,12 @@
+---
+- name: Clone notes repository
+  become: true
+  become_user: "{{ user_name }}"
+  ansible.builtin.git:
+    repo: '{{ repo_notes }}'
+    dest: '{{ user_home }}/notes'
+    clone: true
+    update: false
+    force: false
+  ignore_errors: true
+  when: prepare_notes

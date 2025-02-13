@@ -1,0 +1,6 @@
+---
+# user_name: "vagrant"
+# user_password: "vagrant"
+# user_shell: "/bin/zsh"
+# user_home: "/home/{{ user_name }}"
+# user_groups: "sudo, docker"

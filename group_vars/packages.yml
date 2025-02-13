@@ -1,0 +1,46 @@
+---
+## May need to be updated when new versions are released
+obsidian_deb_direct_url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.8.4/obsidian_1.8.4_amd64.deb"
+
+## APT Packages
+apt_packages:
+  - name: "i3"                      # used as the window manager.
+    state: "present"
+  - name: "polybar"                 # used as the status bar at the top of the screen.
+    state: "present"
+  - name: "rofi"                    # used as the application launcher. Triggered by a line in the i3 config (<super-key> + <D>).
+    state: "present"
+  - name: "flameshot"               # used for screenshots. Triggered by a line in the i3 config (Printscreen key).
+    state: "present"
+  - name: "zsh"                     # used as the default shell for the user.
+    state: "present"
+  - name: "tmux"                    # used as the terminal multiplexer.
+    state: "present"
+  - name: "xclip"                   # used by various zsh plugins and other tools to interact with the clipboard
+    state: "present"
+  - name: "xsel"                    # used by various zsh plugins and other tools to interact with the clipboard
+    state: "present"
+  - name: "autocutsel"              # used to sync clipboards (triggered by a line in the i3 config)
+    state: "present"
+  - name: "feh"                     # used to set the wallpaper (triggered by a line in the i3 config)
+    state: "present"
+  - name: "mate-terminal"           # used as the default terminal emulator. Opened by a line in the i3 config (<super-key> + <Enter>)
+    state: "present"
+  - name: "fzf"                     # required by a sub-component of a polybar helper script.
+    state: "present"
+  - name: "dconf-cli"               # used to import mate-terminal settings (theme, font, etc...)
+    state: "present"
+  - name: "shellcheck"              # required for vs code bash linting
+    state: "present"
+  - name: "docker.io"               # required to run docker containers (ex: explainshell for vscode extension)
+    state: "present"
+  - name: "docker-compose"          # required to run docker containers (ex: explainshell for vscode extension)
+    state: "present"
+  - name: "python3-passlib"         # required for password hash generation for ansible.builtin.user module (roles/install-dotfiles/tasks/create-user.yml)
+    state: "present"
+  - name: "jq"                      # required for pimp-my-kali
+    state: "present"
+  - name: "xfce4"                   # remove xfce4 since we are switching to i3
+    state: "absent"
+  - name: "kali-desktop-xfce"       # remove xfce4 since we are switching to i3
+    state: "absent"

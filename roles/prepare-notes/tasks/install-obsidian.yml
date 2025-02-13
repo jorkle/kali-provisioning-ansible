@@ -1,0 +1,15 @@
+---
+- name: Download Obsidian Debian packages
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ obsidian_deb_direct_url }}"
+    dest: "/tmp/obsidian.deb"
+    mode: "0644"
+  when: install_obsidian
+
+- name: Install Obsidian
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/obsidian.deb"
+    state: present
+  when: install_obsidian

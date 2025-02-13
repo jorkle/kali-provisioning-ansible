@@ -1,0 +1,9 @@
+---
+- name: Install dotfiles
+  become: true
+  become_user: "{{ user_name }}"
+  ansible.builtin.command:
+    cmd: './install'
+    chdir: '{{ user_home }}/.dotfiles'
+    creates: '{{ user_home }}/wild.png'
+  when: install_dotfiles
